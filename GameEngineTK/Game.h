@@ -16,6 +16,8 @@
 
 #include "DebugCamera.h"
 
+#include <Model.h>
+
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
 class Game
@@ -82,4 +84,21 @@ private:
 	DirectX::SimpleMath::Matrix m_proj;
 	//デバッグカメラ
 	std::unique_ptr<DebugCamera> m_debugcamera;
+	//エフェクトファクトリ
+	std::unique_ptr<DirectX::EffectFactory> m_factory;
+	//モデル
+	std::unique_ptr<DirectX::Model> m_modelground;
+	//モデル
+	std::unique_ptr<DirectX::Model> m_modelsky;
+	//ボール
+	std::unique_ptr<DirectX::Model> m_ball;
+
+	std::unique_ptr<DirectX::Model> m_balls[20];
+	//球ワールド行列
+	DirectX::SimpleMath::Matrix m_worlball;
+
+	//ワールド行列配列
+	DirectX::SimpleMath::Matrix m_worlds[20];
+
+	float rot;
 };
