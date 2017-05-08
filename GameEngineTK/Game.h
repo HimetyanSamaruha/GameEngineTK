@@ -18,6 +18,8 @@
 
 #include <Model.h>
 
+#include <Keyboard.h>
+
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
 class Game
@@ -93,12 +95,32 @@ private:
 	//ボール
 	std::unique_ptr<DirectX::Model> m_ball;
 
-	std::unique_ptr<DirectX::Model> m_balls[20];
+	//ぽっと
+	std::unique_ptr<DirectX::Model> m_pot;
+
+	std::unique_ptr<DirectX::Model> m_tank;
+
+	//std::unique_ptr<DirectX::Model> m_balls[20];
 	//球ワールド行列
 	DirectX::SimpleMath::Matrix m_worlball;
 
 	//ワールド行列配列
 	DirectX::SimpleMath::Matrix m_worlds[20];
+	DirectX::SimpleMath::Matrix m_world2;
+
+	DirectX::SimpleMath::Matrix transmat[20];
+
+	//キーボード
+	std::unique_ptr<DirectX::Keyboard> keyboard;
+
+	//タンク
+	DirectX::SimpleMath::Vector3 tank_pos;
+
+	//自機のワールド行列
+	DirectX::SimpleMath::Matrix m_tank_wrold;
+
+	float tank_rot;
 
 	float rot;
+	float scl;
 };
