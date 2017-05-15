@@ -16,10 +16,10 @@ using namespace DirectX::SimpleMath;
 using Microsoft::WRL::ComPtr;
 
 Game::Game() :
-    m_window(0),
-    m_outputWidth(800),
-    m_outputHeight(600),
-    m_featureLevel(D3D_FEATURE_LEVEL_9_1)
+	m_window(0),
+	m_outputWidth(800),
+	m_outputHeight(600),
+	m_featureLevel(D3D_FEATURE_LEVEL_9_1)
 {
 }
 
@@ -93,6 +93,8 @@ void Game::Initialize(HWND window, int width, int height)
 	}
 
 	keyboard = std::make_unique<Keyboard>();
+
+	m_camera = std::make_unique<FollowCamera>(m_outputWidth, m_outputHeight);
 }
 
 // Executes the basic game loop.
@@ -120,8 +122,36 @@ void Game::Update(DX::StepTimer const& timer)
 	rot += 0.01f;
 	scl += 0.01f;
 
+	//カメラの更新
+	m_view = m_camera->GetViewMatrix();
+	m_proj = m_camera->GetProjMatrix();
+
 	//ビュー更新
-	m_view = m_debugcamera->GetCameraMatrix();
+	//m_view = m_debugcamera->GetCameraMatrix();
+
+	//どこから見るのか（視点
+	//Vector3 eyepos(0, 0, 5.0f);
+	////どこを見るのか（注視点
+	//Vector3 refpos(0, 0, 0);
+	////どちらが画面上か（上方向ベクトル
+	//Vector3 upvec(0,1.0f, 0);
+	////ベクトルの正規化（長さを１にする
+	//upvec.Normalize();
+	////ビュー行列を生成
+	//m_view = Matrix::CreateLookAt(eyepos, refpos, upvec);
+
+	//垂直方向視野角
+	//float fovY = XMConvertToRadians(60.0f);
+	////アスペクト比
+	//float aspect = (float)m_outputWidth / m_outputHeight;
+	////手前の表示限界
+	//float nearClip = 0.1f;
+	////奥の表示限界
+	//float farClip = 1000.0f;
+	////射影行列の生成（透視行列
+	//m_proj = Matrix::CreatePerspectiveFieldOfView(fovY, aspect, nearClip, farClip);
+
+
 
 	//球のワールド行列を計算
 	Matrix scalemat = Matrix::CreateScale(sinf(scl)+1.0f)*20.0f;
@@ -131,15 +161,12 @@ void Game::Update(DX::StepTimer const& timer)
 	//Matrix rotmat = rotmatZ * rotmatX * rotmatY;
 
 	//平行移動
-
 	Matrix transmat2 = Matrix::CreateTranslation(75.0f, 0.0f, 0.0f);
-
 	//ロール
 	Matrix rotmatZ = Matrix::CreateRotationZ(XMConvertToRadians(0.0f));
 	//ピッチ
 	Matrix rotmatX = Matrix::CreateRotationX(XMConvertToRadians(0.0f));
 	
-
 	for (int i = 0; i < 20; i++)
 	{
 		//ヨー
@@ -159,10 +186,6 @@ void Game::Update(DX::StepTimer const& timer)
 
 		//移動量ベクトルを自機の角度分回転させる
 		moveV = Vector3::TransformNormal(moveV, m_tank_wrold);
-
-		////回転行列ver
-		/*Matrix tank_rotmatY = Matrix::CreateRotationY(tank_rot);
-		moveV = Vector3::TransformNormal(moveV, tank_rotmatY);*/
 
 		//時機の座標を移動させる
 		tank_pos += moveV;
@@ -185,23 +208,28 @@ void Game::Update(DX::StepTimer const& timer)
 	if (g_key.A)
 	{
 		//移動ベクトル
-		tank_rot += 1.0f;
+		tank_rot += 0.02f;
 	}
 
 	//Dキーが押されたなら
 	if (g_key.D)
 	{
 		//移動ベクトル
-		tank_rot -= 1.0f;
+		tank_rot -= 0.02f;
 	}
 
 	{
 		//自機のワールド行列を計算
 		Matrix tankmat = Matrix::CreateTranslation(tank_pos);
-		Matrix tankrot = Matrix::CreateRotationY(XMConvertToRadians(tank_rot));
+		Matrix tankrot = Matrix::CreateRotationY(tank_rot);
 
 		m_tank_wrold = tankrot * tankmat;
 	}
+
+	m_camera->SetTargetpos(tank_pos);
+	m_camera->SetTagetAngle(tank_rot);
+
+	m_camera->Update();
 }
 
 // Draws the scene.

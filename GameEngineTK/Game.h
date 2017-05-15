@@ -20,6 +20,9 @@
 
 #include <Keyboard.h>
 
+#include "Camera.h"
+#include "FollowCamera.h"
+
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
 class Game
@@ -123,4 +126,10 @@ private:
 
 	float rot;
 	float scl;
+
+	//カメラクラスの定義
+	std::unique_ptr<FollowCamera> m_camera;
+
+	DirectX::SimpleMath::Vector3 Eyepos;
+	DirectX::SimpleMath::Vector3 Refpos;
 };
