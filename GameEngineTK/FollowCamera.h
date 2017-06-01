@@ -16,7 +16,7 @@ public:
 	void Update() override;
 
 	//視点をセット
-	void SetTargetpos(DirectX::SimpleMath::Vector3 eyepos);
+	void SetTargetpos(DirectX::SimpleMath::Vector3 taregtpos);
 
 	void SetTagetAngle(float targetangle);
 

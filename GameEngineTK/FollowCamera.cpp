@@ -13,6 +13,7 @@ FollowCamera::FollowCamera(int w, int h)
 	m_target_pos = Vector3::Zero;
 	m_target_rot = 0.0f;
 	maincamera = 1;
+	m_keyboard = nullptr;
 }
 
 void FollowCamera::Update()
@@ -30,18 +31,18 @@ void FollowCamera::Update()
 	if(maincamera==1)
 	{
 	//TPSカメラ
-		Refpos = m_target_pos + Vector3(0, 1.0f, 0.0f);
+		Refpos = m_target_pos + Vector3(0, 2, 0);
 
 		Vector3 cameraV(0.0f, 0.0f, CAMERA_DISTANCE);
 
-		Matrix rotcamera = Matrix::CreateRotationY(m_target_rot);
-		cameraV = Vector3::TransformNormal(cameraV, rotcamera);
+		Matrix rot = Matrix::CreateRotationY(m_target_rot);
+		cameraV = Vector3::TransformNormal(cameraV, rot);
 
 		Eyepos = Refpos + cameraV;
 
 		//ゴム紐カメラ
-		Eyepos = eyepos + (Eyepos - eyepos)*0.03f;
-		Refpos = refpos + (Refpos - refpos)*0.15f;
+		Eyepos = m_eyepos + (Eyepos - m_eyepos)*0.03f;
+		Refpos = m_refpos + (Refpos - m_refpos)*0.15f;
 	}
 	else if(maincamera==-1)
 	{
@@ -51,21 +52,21 @@ void FollowCamera::Update()
 		Vector3 cameraV(0, 0, -CAMERA_DISTANCE);
 		Matrix rotmat = Matrix::CreateRotationY(m_target_rot);
 		cameraV = Vector3::TransformNormal(cameraV, rotmat);
-		Refpos = eyepos + cameraV;
+		Refpos = m_eyepos + cameraV;
 	}
 
 
-	this->Seteyepos(Eyepos);
-	this->Setrefpos(Refpos);
+	Seteyepos(Eyepos);
+	Setrefpos(Refpos);
 
 	//基底クラスの更新
 	Camera::Update();
 
 }
 
-void FollowCamera::SetTargetpos(DirectX::SimpleMath::Vector3 eyepos)
+void FollowCamera::SetTargetpos(DirectX::SimpleMath::Vector3 taregtpos)
 {
-	this->m_target_pos = eyepos;
+	this->m_target_pos = taregtpos;
 }
 
 void FollowCamera::SetTagetAngle(float targetangle)

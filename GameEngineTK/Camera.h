@@ -6,7 +6,7 @@
 //	用途	カメラを制御するクラス
 //
 
-#include <d3d11.h>
+#include <d3d11_1.h>
 #include <SimpleMath.h>
 #pragma once
 
@@ -18,22 +18,22 @@ protected:
 	//ビュー行列
 	DirectX::SimpleMath::Matrix m_view;
 	//どこから見るのか（視点
-	DirectX::SimpleMath::Vector3 eyepos;
+	DirectX::SimpleMath::Vector3 m_eyepos;
 	//どこを見るのか（注視点
-	DirectX::SimpleMath::Vector3 refpos;
+	DirectX::SimpleMath::Vector3 m_refpos;
 	//どちらが画面上か（上方向ベクトル
-	DirectX::SimpleMath::Vector3 upvec;
+	DirectX::SimpleMath::Vector3 m_upvec;
 
 	//プロジェクション行列
 	DirectX::SimpleMath::Matrix m_proj;
 	//垂直方向視野角
-	float fovY;
+	float m_fovY;
 	//アスペクト比
-	float aspect;
+	float m_aspect;
 	//手前の表示限界
-	float nearClip;
+	float m_nearClip;
 	//奥の表示限界
-	float farClip;
+	float m_farClip;
 
 public:
 	Camera(int w,int h);
@@ -41,16 +41,16 @@ public:
 
 	virtual void Update();
 
-	DirectX::SimpleMath::Matrix GetViewMatrix();
+	const DirectX::SimpleMath::Matrix& GetViewMatrix();
 
-	DirectX::SimpleMath::Matrix GetProjMatrix();
+	const DirectX::SimpleMath::Matrix& GetProjMatrix();
 
 	//視点をセット
-	void Seteyepos(DirectX::SimpleMath::Vector3& eyepos);
+	void Seteyepos(const DirectX::SimpleMath::Vector3& eyepos);
 
-	void Setrefpos(DirectX::SimpleMath::Vector3& refpos);
+	void Setrefpos(const DirectX::SimpleMath::Vector3& refpos);
 
-	void Setupvec(DirectX::SimpleMath::Vector3& upvec);
+	void Setupvec(const DirectX::SimpleMath::Vector3& upvec);
 
 	void SetfovY(float fovY);
 

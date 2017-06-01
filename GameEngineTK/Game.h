@@ -22,12 +22,28 @@
 
 #include "Camera.h"
 #include "FollowCamera.h"
+#include "Obj3d.h"
+
+#include <vector>
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
 class Game
 {
 public:
+
+	enum PLAYER_PARTS
+	{
+		PLAYER_PARTS_LEG,
+		PLAYER_PARTS_BODY,
+		PLAYER_PARTS_GUN1,
+		PLAYER_PARTS_GUN2,
+		PLAYER_PARTS_GUN3,
+		PLAYER_PARTS_GUN4,
+		PLAYER_PARTS_GIA,
+		PLAYER_PARTS_NUM,
+	};
+
 
     Game();
 
@@ -94,25 +110,18 @@ private:
 	//モデル
 	std::unique_ptr<DirectX::Model> m_modelground;
 	//モデル
-	std::unique_ptr<DirectX::Model> m_modelsky;
+	Obj3d m_obj3SkyDome;
 	//ボール
 	std::unique_ptr<DirectX::Model> m_ball;
 
-	//ぽっと
-	std::unique_ptr<DirectX::Model> m_pot;
-
+	//タンクモデル
 	std::unique_ptr<DirectX::Model> m_tank;
 
-	//std::unique_ptr<DirectX::Model> m_balls[20];
 	//球ワールド行列
 	DirectX::SimpleMath::Matrix m_worlball;
 
 	//ワールド行列配列
-	DirectX::SimpleMath::Matrix m_worlds[20];
 	DirectX::SimpleMath::Matrix m_world2;
-
-	DirectX::SimpleMath::Matrix transmat[20];
-
 	//キーボード
 	std::unique_ptr<DirectX::Keyboard> keyboard;
 
@@ -121,7 +130,11 @@ private:
 
 	//自機のワールド行列
 	DirectX::SimpleMath::Matrix m_tank_wrold;
+	//自機のワールド行列
+	DirectX::SimpleMath::Matrix m_tank_wrold2;
 
+	std::vector<Obj3d> m_Player;
+	
 	float tank_rot;
 
 	float rot;
