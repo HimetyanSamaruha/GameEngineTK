@@ -24,6 +24,8 @@
 #include "FollowCamera.h"
 #include "Obj3d.h"
 
+#include "Player.h"
+
 #include <vector>
 
 // A basic game implementation that creates a D3D11 device and
@@ -32,7 +34,7 @@ class Game
 {
 public:
 
-	enum PLAYER_PARTS
+	/*enum PLAYER_PARTS
 	{
 		PLAYER_PARTS_LEG,
 		PLAYER_PARTS_BODY,
@@ -42,7 +44,7 @@ public:
 		PLAYER_PARTS_GUN4,
 		PLAYER_PARTS_GIA,
 		PLAYER_PARTS_NUM,
-	};
+	};*/
 
 
     Game();
@@ -133,7 +135,7 @@ private:
 	//自機のワールド行列
 	DirectX::SimpleMath::Matrix m_tank_wrold2;
 
-	std::vector<Obj3d> m_Player;
+	std::unique_ptr<Player> m_Player;
 	
 	float tank_rot;
 

@@ -21,7 +21,7 @@ public:
 		Microsoft::WRL::ComPtr<ID3D11Device> d3dDevice,
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> d3dContext, 
 		Camera* camera);
-private:
+protected:
 
 	//デバイス
 	static Microsoft::WRL::ComPtr<ID3D11Device>            m_d3dDevice;
@@ -33,7 +33,7 @@ private:
 
 	//汎用ステート
 	static std::unique_ptr<DirectX::CommonStates> m_states;
-	//static std::unique_ptr<DirectX::BasicEffect> m_effect;
+	
 	static std::unique_ptr<DirectX::EffectFactory> m_factory;
 
 	//モデル
